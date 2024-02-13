@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-interface CounterProps {
+export interface CounterProps {
   /** Counter initial count*/
   initialCount?: number
 }
@@ -20,7 +20,7 @@ export default function Counter({initialCount = 0}: CounterProps) {
   }
 
   return (
-    <div>
+    <div className="counter">
       <h1>Counter</h1>
       <p>{count}</p>
       <button type="button" onClick={decrementCount}>Decrement -</button>
