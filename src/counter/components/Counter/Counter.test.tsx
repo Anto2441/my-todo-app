@@ -1,10 +1,10 @@
-import { afterEach, describe, expect, test } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 import { cleanup, fireEvent, Matcher, render, screen } from '@testing-library/react'
 
 import Counter, { CounterProps } from './Counter'
 
-function renderCounter({ initialCount = 0 }: Partial<CounterProps> = {}) {
-render(<Counter initialCount={initialCount}/>)
+function renderCounter({ initialCount = 0, onDecrementCount, onIncrementCount }: Partial<CounterProps> = {}) {
+render(<Counter initialCount={initialCount} onDecrementCount={onDecrementCount} onIncrementCount={onIncrementCount}/>)
 
  const heading = () => screen.queryByRole('heading', {name: /Counter/i})
  const countValue = (result: Matcher) => screen.queryByText(result)
@@ -34,7 +34,9 @@ describe('<Counter />', () => {
   })
 
   test('should decrement the counter', () => {
-    const {countValue, decrementButton} = renderCounter()
+    const onDecrementCount = vi.fn();
+
+    const {countValue, decrementButton} = renderCounter({ onDecrementCount })
 
     expect(countValue(0)).toBeInTheDocument()
     expect(decrementButton()).toBeInTheDocument()
@@ -42,10 +44,13 @@ describe('<Counter />', () => {
     fireEvent.click(decrementButton()!)
 
     expect(countValue(-1)).toBeInTheDocument()
+    expect(onDecrementCount).toHaveBeenCalledTimes(1);
   })
 
   test('should increment the counter', () => {
-    const {countValue, incrementButton} = renderCounter()
+    const onIncrementCount = vi.fn()
+
+    const {countValue, incrementButton} = renderCounter({ onIncrementCount })
 
     expect(countValue(0)).toBeInTheDocument()
     expect(incrementButton()).toBeInTheDocument()
@@ -53,6 +58,7 @@ describe('<Counter />', () => {
     fireEvent.click(incrementButton()!)
 
     expect(countValue(1)).toBeInTheDocument()
+    expect(onIncrementCount).toHaveBeenCalledTimes(1)
   })
 
   afterEach(() => {
