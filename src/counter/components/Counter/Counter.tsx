@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCount, useDecrementCount, useIncrementCount } from "../../store";
 
 export interface CounterProps {
   /** Counter initial count*/
@@ -12,36 +12,25 @@ export interface CounterProps {
 /**
  * Counter component for user interaction
  */
-export default function Counter({
-  initialCount = 0,
-  onDecrementCount,
-  onIncrementCount,
-}: CounterProps) {
-  const [count, setCount] = useState(initialCount);
+export default function Counter({ initialCount = 0 }: CounterProps) {
+  const count = useCount();
 
-  function decrementCount() {
-    setCount((currentCount) => (currentCount -= 1));
+  const decrementCount = useDecrementCount();
 
-    if (onDecrementCount) {
-      onDecrementCount();
-    }
-  }
+  const incrementCount = useIncrementCount();
 
-  function incrementCount() {
-    setCount((currentCount) => (currentCount += 1));
-
-    if (onIncrementCount) {
-      onIncrementCount();
-    }
-  }
+  console.log(initialCount);
 
   return (
     <div className="counter">
       <h1>Counter</h1>
+
       <p>{count}</p>
+
       <button type="button" onClick={decrementCount}>
         Decrement -
       </button>
+
       <button type="button" onClick={incrementCount}>
         Increment +
       </button>

@@ -1,13 +1,13 @@
-import { afterEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from "vitest";
 import {
   cleanup,
   fireEvent,
   Matcher,
   render,
   screen,
-} from '@testing-library/react';
+} from "@testing-library/react";
 
-import Counter, { CounterProps } from './Counter';
+import Counter, { CounterProps } from "./Counter";
 
 function renderCounter({
   initialCount = 0,
@@ -22,12 +22,12 @@ function renderCounter({
     />
   );
 
-  const heading = () => screen.queryByRole('heading', { name: /Counter/i });
+  const heading = () => screen.queryByRole("heading", { name: /Counter/i });
   const countValue = (result: Matcher) => screen.queryByText(result);
   const decrementButton = () =>
-    screen.queryByRole('button', { name: /Decrement/i });
+    screen.queryByRole("button", { name: /Decrement/i });
   const incrementButton = () =>
-    screen.queryByRole('button', { name: /Increment/i });
+    screen.queryByRole("button", { name: /Increment/i });
 
   return {
     countValue,
@@ -37,8 +37,8 @@ function renderCounter({
   };
 }
 
-describe('<Counter />', () => {
-  test('should render correctly', () => {
+describe("<Counter />", () => {
+  test("should render correctly", () => {
     const { heading, countValue, decrementButton, incrementButton } =
       renderCounter();
 
@@ -48,13 +48,13 @@ describe('<Counter />', () => {
     expect(incrementButton()).toBeInTheDocument();
   });
 
-  test('it should render 10 initially', () => {
+  test.only("it should render 10 initially", () => {
     const { countValue } = renderCounter({ initialCount: 10 });
 
     expect(countValue(10)).toBeInTheDocument();
   });
 
-  test('should decrement the counter', () => {
+  test("should decrement the counter", () => {
     const onDecrementCount = vi.fn();
 
     const { countValue, decrementButton } = renderCounter({ onDecrementCount });
@@ -68,7 +68,7 @@ describe('<Counter />', () => {
     expect(onDecrementCount).toHaveBeenCalledTimes(1);
   });
 
-  test('should increment the counter', () => {
+  test("should increment the counter", () => {
     const onIncrementCount = vi.fn();
 
     const { countValue, incrementButton } = renderCounter({ onIncrementCount });
