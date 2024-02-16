@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test } from "vitest";
 import {
   cleanup,
   fireEvent,
@@ -7,20 +7,10 @@ import {
   screen,
 } from "@testing-library/react";
 
-import Counter, { CounterProps } from "./Counter";
+import Counter from "./Counter";
 
-function renderCounter({
-  initialCount = 0,
-  onDecrementCount,
-  onIncrementCount,
-}: Partial<CounterProps> = {}) {
-  render(
-    <Counter
-      initialCount={initialCount}
-      onDecrementCount={onDecrementCount}
-      onIncrementCount={onIncrementCount}
-    />
-  );
+function renderCounter() {
+  render(<Counter />);
 
   const heading = () => screen.queryByRole("heading", { name: /Counter/i });
   const countValue = (result: Matcher) => screen.queryByText(result);
@@ -48,16 +38,8 @@ describe("<Counter />", () => {
     expect(incrementButton()).toBeInTheDocument();
   });
 
-  test.only("it should render 10 initially", () => {
-    const { countValue } = renderCounter({ initialCount: 10 });
-
-    expect(countValue(10)).toBeInTheDocument();
-  });
-
   test("should decrement the counter", () => {
-    const onDecrementCount = vi.fn();
-
-    const { countValue, decrementButton } = renderCounter({ onDecrementCount });
+    const { countValue, decrementButton } = renderCounter();
 
     expect(countValue(0)).toBeInTheDocument();
     expect(decrementButton()).toBeInTheDocument();
@@ -65,13 +47,10 @@ describe("<Counter />", () => {
     fireEvent.click(decrementButton()!);
 
     expect(countValue(-1)).toBeInTheDocument();
-    expect(onDecrementCount).toHaveBeenCalledTimes(1);
   });
 
   test("should increment the counter", () => {
-    const onIncrementCount = vi.fn();
-
-    const { countValue, incrementButton } = renderCounter({ onIncrementCount });
+    const { countValue, incrementButton } = renderCounter();
 
     expect(countValue(0)).toBeInTheDocument();
     expect(incrementButton()).toBeInTheDocument();
@@ -79,7 +58,6 @@ describe("<Counter />", () => {
     fireEvent.click(incrementButton()!);
 
     expect(countValue(1)).toBeInTheDocument();
-    expect(onIncrementCount).toHaveBeenCalledTimes(1);
   });
 
   afterEach(() => {

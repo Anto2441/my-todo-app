@@ -1,18 +1,21 @@
-import { useState } from 'react';
-import TodoItem from './TodoItem';
-import './TodoList.css';
+import { useEffect, useState } from "react";
+import TodoItem from "./TodoItem";
+import "./TodoList.css";
+import { useUpdateCount } from "../../counter";
 
 export default function TodoList() {
-  const [text, setText] = useState('');
+  const updateCount = useUpdateCount();
+
+  const [text, setText] = useState("");
   const [tasks, setTasks] = useState([
     {
       id: 1,
-      text: 'Do a ToDo List',
+      text: "Do a ToDo List",
       completed: true,
     },
     {
       id: 2,
-      text: 'Walk the dog',
+      text: "Walk the dog",
       completed: false,
     },
   ]);
@@ -24,7 +27,7 @@ export default function TodoList() {
       completed: false,
     };
     setTasks((currentTasks) => [...currentTasks, newTask]);
-    setText('');
+    setText("");
   }
 
   function handleCompleted(id: number, completed: boolean) {
@@ -44,6 +47,10 @@ export default function TodoList() {
       return currentTasks.filter((task) => task.id !== id);
     });
   }
+
+  useEffect(() => {
+    updateCount(tasks.length);
+  }, [tasks.length, updateCount]);
 
   return (
     <>

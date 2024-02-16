@@ -7,20 +7,24 @@ type State = {
 type Actions = {
   increment: () => void;
   decrement: () => void;
+  update: (count: number) => void;
 };
 
-const createCounterStore = create<State & Actions>((set) => ({
+const useCounterStore = create<State & Actions>((set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
   decrement: () => set((state) => ({ count: state.count - 1 })),
+  update: (count: number) => set(() => ({ count: count })),
 }));
 
 // State
-export const useCount = () => createCounterStore((state) => state.count);
+export const useCount = () => useCounterStore((state) => state.count);
 
 // Actions
+export const useUpdateCount = () => useCounterStore((state) => state.update);
+
 export const useIncrementCount = () =>
-  createCounterStore((state) => state.increment);
+  useCounterStore((state) => state.increment);
 
 export const useDecrementCount = () =>
-  createCounterStore((state) => state.decrement);
+  useCounterStore((state) => state.decrement);
